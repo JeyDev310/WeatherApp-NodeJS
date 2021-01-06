@@ -15,7 +15,7 @@ This app contains both backend and frontend in a single repository.
 Navigate to the root directory.
 
 ```
-$ cd Weather
+$ cd WeatherApp
 
 ```
 Start the `frontend`, `backend` containers using docker-compose
