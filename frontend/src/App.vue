@@ -17,13 +17,13 @@
     </div>
   </nav>
   <div class="footer">
-      <ul class="list-group" style="">
-        <a class="list-group-item list-group-item-action" v-for="favorite in favorites" v-bind:key="favorite">
+      <ul class="list-group">
+        <a style="cursor:pointer;" class="list-group-item list-group-item-action" v-for="favorite in filteredFavorites()" v-bind:key="favorite.zipcode" @click="weather=favorite">
             {{favorite.locationName}} ({{favorite.zipcode}})
             <button type="button" class="btn btn-default" style="display: inline; float: right;" @click="deleteFavorite(favorite)">X</button>
         </a>
       </ul>
-      <div>
+      <div v-if="weather.zipcode">
         <div class="card" style="margin-top: 30px;">
             <div class="card" style="margin-top: 0px;">
               <div class="card-body" style="margin-top: 0px;">
@@ -70,9 +70,34 @@ export default {
     };
   },
   methods: {
+    filteredFavorites() {
+      if (this.zipcode == '') {
+        return this.favorites;
+      }
+      const filteredFavorites = this.favorites.filter(item => {
+        if (item.zipcode.includes(this.zipcode)) {
+          return true;
+        }
+        return false;
+      })
+      return filteredFavorites;
+    },
     fetchWeather(zipcode='90001') {
-      this.$http.get(`/weather/${zipcode}`).then(response => {
+      this.$http.get(`/weather/${zipcode}`)
+      .then(response => {
         this.weather = response.data;
+      })
+      .catch(e => {
+        this.weather = {}
+      });
+    },
+    getFavorites() {
+      this.$http.get(`/favorites`)
+      .then(response => {
+        this.favorites = response.data;
+      })
+      .catch(e => {
+        this.favorites = {}
       });
     },
     addFavorite() {
@@ -87,7 +112,7 @@ export default {
     }
   },
   created: function() {
-    this.fetchWeather();
+    this.getFavorites();
   },  
 };
 </script>

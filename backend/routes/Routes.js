@@ -7,9 +7,7 @@ const { json } = require('express');
 // get all todo items in the db
 app.get('/weather/:zipcode', async(req, res) => {
   let { zipcode } = req.params;
-  if (zipcode == undefined) {
-    zipcode = 90001;
-  }
+  
   try {
     const ret = await axios.get(`http://api.openweathermap.org/data/2.5/weather?zip=${zipcode}&appid=655dfc390726be35679ee1f171b45301`);
     const weather = ret.data;
