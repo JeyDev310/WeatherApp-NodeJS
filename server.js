@@ -11,7 +11,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs')
 
 app.get('/', (req, res) => {
-  console.log('----all')
   const weather = {description: "desc", temperature: 23.3, windSpeed: 3.5, pressure: 2.5, humidity: 5.3, locationName: "italy"}
   res.render('index', weather);
 })
